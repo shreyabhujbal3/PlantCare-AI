@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="{{ 'mr' if lang == 'mr' else 'en' }}">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}PlantCare AI{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">🌱</span> PlantCare <b>AI</b></a>
+  <nav>
+    {% if logged_in %}
+      <a href="{{ url_for('dashboard') }}">{{ 'मुख्यपृष्ठ' if lang=='mr' else 'Dashboard' }}</a>
+      <a href="{{ url_for('detect') }}">{{ 'रोग तपासा' if lang=='mr' else 'Detect' }}</a>
+      <a href="{{ url_for('history') }}">{{ 'इतिहास' if lang=='mr' else 'History' }}</a>
+    {% endif %}
+    <a href="{{ url_for('about') }}">{{ 'माहिती' if lang=='mr' else 'About' }}</a>
+    <div class="language">
+      <a href="{{ url_for('language', code='en') }}" class="{{ 'active' if lang=='en' else '' }}">EN</a>
+      <span>/</span>
+      <a href="{{ url_for('language', code='mr') }}" class="{{ 'active' if lang=='mr' else '' }}">मराठी</a>
+    </div>
+    {% if logged_in %}<a class="nav-cta" href="{{ url_for('logout') }}">{{ 'बाहेर पडा' if lang=='mr' else 'Log out' }}</a>{% endif %}
+  </nav>
+</header>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+{% endwith %}
+<main>{% block content %}{% endblock %}</main>
+<footer>🌿 PlantCare AI <span>·</span> {{ 'शेतकऱ्यांसाठी स्मार्ट पीक सहाय्य' if lang=='mr' else 'Smart crop support for farmers' }}</footer>
+</body></html>
